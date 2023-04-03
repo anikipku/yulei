@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>获取用户位置和空气质量数据</title>
+	<style>
+		body {
+			font-family: Arial, sans-serif;
+			font-size: 16px;
+			line-height: 1.5;
+			background-color: #f2f2f2;
+			margin: 0;
+			padding: 0;
+		}
+		h1 {
+			text-align: center;
+			margin-top: 30px;
+			margin-bottom: 20px;
+			color: #555;
+		}
+		p {
+			margin: 10px 0;
+			color: #333;
+		}
+		.btn {
+			display: inline-block;
+			padding: 10px 20px;
+			background-color: #007bff;
+			color: #fff;
+			border: none;
+			border-radius: 5px;
+			cursor: pointer;
+		}
+		.btn:hover {
+			background-color: #0062cc;
+		}
+		.container {
+			max-width: 600px;
+			margin: 0 auto;
+			padding: 30px;
+			background-color: #fff;
+			box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+			border-radius: 5px;
+		}
+	</style>
+	<script>
+		function getLocation() {
+			if (navigator.geolocation) {
+				navigator.geolocation.getCurrentPosition(getAirQuality);
+			} else {
+				alert("该浏览器不支持地理位置功能。");
+			}
+		}
+
+		function getAirQuality(position) {
+  var latitude = position.coords.latitude;
+  var longitude = position.coords.longitude;
+  var apiKey = "5fd2ad96-9f9e-499f-9b8a-713bcfa6a3e2";
+  var apiUrl = "https://api.airvisual.com/v2/nearest_city?lat=" + latitude + "&lon=" + longitude + "&key=" + apiKey;
+  
+  fetch(apiUrl)
+    .then(response => response.json())
+    .then(data => {
+      var aqi = data.data.current.pollution.aqius;
+      var city = data.data.city;
+      var time = new Date(data.data.current.pollution.ts * 1000);
+      
+      document.getElementById("aqi").innerHTML = aqi;
+      document.getElementById("city").innerHTML = city;
+      document.getElementById("time").innerHTML = time;
+    })
+    .catch(error => {
+      console.log(error);
+      alert("无法获取空气质量数据。");
+    });
+}
+	</script>
+</head>
+<body>
+	<div class="container">
+		<h1>获取用户位置和空气质量数据</h1>
+		<p>点击下面的按钮获取您当前的空气质量数据。</p>
+<button class="btn" onclick="getLocation()">获取位置和空气质量</button>
+<p>您当前所在城市：<span id="city"></span></p>
+<p>空气质量指数（AQI）：<span id="aqi"></span></p>
+<p>更新时间：<span id="time"></span></p>
+</div>
+
+</body>
+</html>
