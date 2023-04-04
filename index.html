@@ -62,7 +62,17 @@
     .then(data => {
       var aqi = data.data.current.pollution.aqius;
       var city = data.data.city;
-      var time = new Date(data.data.current.pollution.ts * 1000);
+      var timestamp = data.data.current.pollution.ts;
+	var time = new Date(timestamp * 1000);
+	var year = time.getFullYear();
+	var month = time.getMonth() + 1;
+	var date = time.getDate();
+	var hours = time.getHours();
+	var minutes = "0" + time.getMinutes();
+	var seconds = "0" + time.getSeconds();
+	var formattedTime = year + "-" + month + "-" + date + " " + hours + ":" + minutes.substr(-2) + ":" + seconds.substr(-2);
+	document.getElementById("time").innerHTML = formattedTime;
+     
       
       document.getElementById("aqi").innerHTML = aqi;
       document.getElementById("city").innerHTML = city;
@@ -83,6 +93,7 @@
 <p>您当前所在城市：<span id="city"></span></p>
 <p>空气质量指数（AQI）：<span id="aqi"></span></p>
 <p>更新时间：<span id="time"></span></p>
+<p>给玉蕾呼吸新鲜空气❤</p>
 </div>
 
 </body>
