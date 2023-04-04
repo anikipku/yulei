@@ -62,21 +62,23 @@
     .then(data => {
       var aqi = data.data.current.pollution.aqius;
       var city = data.data.city;
-      var timestamp = data.data.current.pollution.ts;
-	var time = new Date(timestamp * 1000);
-	var year = time.getFullYear();
-	var month = time.getMonth() + 1;
-	var date = time.getDate();
-	var hours = time.getHours();
-	var minutes = "0" + time.getMinutes();
-	var seconds = "0" + time.getSeconds();
-	var formattedTime = year + "-" + month + "-" + date + " " + hours + ":" + minutes.substr(-2) + ":" + seconds.substr(-2);
-	document.getElementById("time").innerHTML = formattedTime;
+      // var timestamp = data.data.current.pollution.ts;
+			var time = new Date();//((timestamp + new Date().getTimezoneOffset() * 60) * 1000);
+			// time.setHours(time.getHours() + 8); // 将时间加上8小时，即北京时间
+			var year = time.getFullYear();
+			var month = time.getMonth() + 1;
+			var date = time.getDate();
+			var hours = time.getHours();
+			var minutes = "0" + time.getMinutes();
+			var seconds = "0" + time.getSeconds();
+			var formattedTime = year + "-" + month + "-" + date + " " + hours + ":" + minutes.substr(-2) + ":" + seconds.substr(-2);
+      document.getElementById("time").innerHTML = formattedTime;
+
      
       
       document.getElementById("aqi").innerHTML = aqi;
       document.getElementById("city").innerHTML = city;
-      document.getElementById("time").innerHTML = time;
+      // document.getElementById("time").innerHTML = time;
     })
     .catch(error => {
       console.log(error);
